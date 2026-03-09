@@ -15,9 +15,11 @@
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
 
-      <a-entity sound="src: #sound_cafe; autoplay: true; loop: true; volume: 0.5; rolloffFactor: 5" position="-1 1.2 -1"></a-entity>
+      <a-entity sound="src: #sound_cafe; autoplay: true; loop: true; volume: 0.3; rolloffFactor: 5" position="-1 1.2 -1"></a-entity>
 
-      <a-entity id="vaso_interactivo" position="0 1.05 0.5"
+      <a-entity id="vaso_interactivo" 
+                class="interactuable" 
+                position="0 1.05 0.5"
                 animation="property: position; to: 0 1.12 0.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine"
                 sound="src: #sound_gol; on: mouseenter; volume: 1">
         
@@ -39,4 +41,18 @@
 
       <a-entity id="rig" position="0 0 1.5">
         <a-entity camera look-controls position="0 1.6 0">
-            <a-cursor color="#FFD700" radius="0.
+            <a-entity cursor="fuse: true; fuseTimeout: 500"
+                      position="0 0 -1"
+                      geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+                      material="color: #FFD700; shader: flat"
+                      raycaster="objects: .interactuable">
+            </a-entity>
+        </a-entity>
+        
+        <a-entity oculus-touch-controls="hand: left"></a-entity>
+        <a-entity oculus-touch-controls="hand: right"></a-entity>
+      </a-entity>
+
+    </a-scene>
+  </body>
+</html>
