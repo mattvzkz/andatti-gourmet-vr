@@ -6,6 +6,10 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   </head>
   <body>
+    <div style="position: fixed; top: 10px; left: 10px; z-index: 999; color: white; font-family: sans-serif; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px;">
+      Haz CLIC en la pantalla para activar el audio 🔊
+    </div>
+
     <a-scene>
       <a-assets>
         <img id="fondo_oxxo" src="escenario_principal.jpg">
@@ -15,13 +19,13 @@
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
 
-      <a-entity sound="src: #sound_cafe; autoplay: true; loop: true; volume: 0.3; rolloffFactor: 5" position="-1 1.2 -1"></a-entity>
+      <a-entity sound="src: #sound_cafe; autoplay: true; loop: true; volume: 0.3" position="-1 1.2 -1"></a-entity>
 
       <a-entity id="vaso_interactivo" 
                 class="interactuable" 
                 position="0 1.05 0.5"
                 animation="property: position; to: 0 1.12 0.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine"
-                sound="src: #sound_gol; on: mouseenter; volume: 1">
+                sound="src: #sound_gol; on: click; volume: 1">
         
         <a-cone radius-bottom="0.04" radius-top="0.06" height="0.15" 
                 material="color: #FFF; opacity: 0.6; transparent: true; roughness: 0; metalness: 0.5">
@@ -41,14 +45,13 @@
 
       <a-entity id="rig" position="0 0 1.5">
         <a-entity camera look-controls position="0 1.6 0">
-            <a-entity cursor="fuse: true; fuseTimeout: 500"
+            <a-entity cursor="fuse: true; fuseTimeout: 1000"
                       position="0 0 -1"
                       geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
                       material="color: #FFD700; shader: flat"
                       raycaster="objects: .interactuable">
             </a-entity>
         </a-entity>
-        
         <a-entity oculus-touch-controls="hand: left"></a-entity>
         <a-entity oculus-touch-controls="hand: right"></a-entity>
       </a-entity>
