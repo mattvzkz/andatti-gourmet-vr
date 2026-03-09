@@ -2,13 +2,14 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>andatti Gourmet VR | Edición Copa del Mundo</title>
+    <title>andatti Gourmet VR | Edición Copa del Mundo 2026</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
   </head>
   <body>
     <div id="welcome-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #FFD700; font-family: Arial, sans-serif; cursor: pointer;">
       <h1 style="font-size: 3em; margin: 0;">andatti GOURMET</h1>
-      <p style="color: #fff; font-size: 1.2em; letter-spacing: 2px;">ESTADIO VIRTUAL OXXO2</p>
+      <p style="color: #fff; font-size: 1.2em; letter-spacing: 2px;">ESTADIO VIRTUAL OXXO3</p>
       <div style="margin-top: 30px; padding: 15px 40px; border: 3px solid #FFD700; font-weight: bold; background: #FFD700; color: #000; border-radius: 50px;">ENTRAR Y PREPARAR CAFÉ</div>
     </div>
 
@@ -31,10 +32,26 @@
         <a-cone radius-bottom="0.07" radius-top="0.1" height="0.25" material="color: #FFF; opacity: 0.7; transparent: true; metalness: 0.5"></a-cone>
         <a-cylinder radius="0.075" height="0.04" position="0 -0.13 0" material="color: #FFD700; metalness: 1"></a-cylinder>
         <a-text value="andatti\nGOURMET" align="center" position="0 0 0.11" color="#FFD700" width="0.8"></a-text>
+
+        <a-entity position="0 0.15 0"
+                  particle-system="
+                    preset: dust; 
+                    color: #FFFFFF; 
+                    particleCount: 20; 
+                    size: 0.3; 
+                    velocityValue: 0 0.05 0; 
+                    velocitySpread: 0.02 0.01 0.02;
+                    accelerationValue: 0 -0.01 0;
+                    randomise: true;
+                    maxAge: 3;
+                    blending: normal;
+                    opacity: 0.15;
+                  ">
+        </a-entity>
       </a-entity>
 
       <a-light type="ambient" intensity="0.8"></a-light>
-      <a-light type="point" intensity="1" position="0 2 -1" color="#FFD700"></a-light>
+      <a-light type="point" intensity="1.2" position="0 2.5 -1" color="#FFD700"></a-light>
 
       <a-entity camera look-controls position="0 1.6 0">
           <a-entity cursor="fuse: true; fuseTimeout: 1000"
@@ -43,35 +60,4 @@
                     geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
                     material="color: #FFD700; shader: flat"
                     animation__fusing="property: scale; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1000; startEvents: fusing"
-                    animation__reset="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
-          </a-entity>
-      </a-entity>
-    </a-scene>
-
-    <script>
-      const welcome = document.querySelector('#welcome-screen');
-      const audioCafe = document.querySelector('#sound_cafeteria');
-      const audioGol = document.querySelector('#sound_gol');
-      const vaso = document.querySelector('#vaso_contenedor');
-
-      welcome.addEventListener('click', function() {
-        welcome.style.display = 'none';
-        
-        // Iniciamos el ambiente de cafetería
-        audioCafe.loop = true;
-        audioCafe.volume = 0.4;
-        audioCafe.play();
-
-        // Desbloqueamos el de gol (sin sonar aún)
-        audioGol.play().then(() => { audioGol.pause(); audioGol.currentTime = 0; });
-      });
-
-      // Al mirar el vaso por 1 segundo... ¡Festejo!
-      vaso.addEventListener('click', function () {
-        audioGol.volume = 0.8;
-        audioGol.play();
-        console.log("¡Interacción lograda!");
-      });
-    </script>
-  </body>
-</html>
+                    animation__reset="property: scale; to:
