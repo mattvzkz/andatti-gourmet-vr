@@ -9,15 +9,17 @@
     <a-scene>
       <a-assets>
         <img id="fondo_oxxo" src="escenario_principal.jpg">
+        <audio id="sound_cafe" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav" preload="auto"></audio>
+        <audio id="sound_gol" src="https://actions.google.com/sounds/v1/sports/crowd_cheer.ogg" preload="auto"></audio>
       </a-assets>
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
 
-      <a-light type="ambient" intensity="0.5"></a-light>
-      <a-light type="directional" intensity="1" position="1 3 1" color="#FFD700"></a-light>
+      <a-entity sound="src: #sound_cafe; autoplay: true; loop: true; volume: 0.5; rolloffFactor: 5" position="-1 1.2 -1"></a-entity>
 
       <a-entity id="vaso_interactivo" position="0 1.05 0.5"
-                animation="property: position; to: 0 1.12 0.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine">
+                animation="property: position; to: 0 1.12 0.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine"
+                sound="src: #sound_gol; on: mouseenter; volume: 1">
         
         <a-cone radius-bottom="0.04" radius-top="0.06" height="0.15" 
                 material="color: #FFF; opacity: 0.6; transparent: true; roughness: 0; metalness: 0.5">
@@ -32,14 +34,9 @@
                 color="#FFD700" width="0.4" font="msdf"></a-text>
       </a-entity>
 
+      <a-light type="ambient" intensity="0.5"></a-light>
+      <a-light type="directional" intensity="1" position="1 3 1" color="#FFD700"></a-light>
+
       <a-entity id="rig" position="0 0 1.5">
         <a-entity camera look-controls position="0 1.6 0">
-            <a-cursor color="#FFD700" radius="0.01"></a-cursor>
-        </a-entity>
-        <a-entity oculus-touch-controls="hand: left"></a-entity>
-        <a-entity oculus-touch-controls="hand: right"></a-entity>
-      </a-entity>
-
-    </a-scene>
-  </body>
-</html>
+            <a-cursor color="#FFD700" radius="0.
