@@ -2,21 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>andatti Gourmet VR | Copa del Mundo 2026</title>
+    <title>andatti Gourmet VR | Edición Copa del Mundo</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   </head>
   <body>
     <div id="welcome-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #FFD700; font-family: Arial, sans-serif; cursor: pointer;">
-      <h1 style="font-size: 3em; margin-bottom: 10px;">andatti GOURMET</h1>
-      <p style="color: #fff; font-size: 1.2em;">EXPERIENCIA MUNDIALISTA 2026</p>
-      <div style="margin-top: 30px; padding: 15px 40px; border: 3px solid #FFD700; font-weight: bold; background: #FFD700; color: #000; border-radius: 50px;">ENTRAR Y ACTIVAR AUDIO</div>
+      <h1 style="font-size: 3em; margin: 0;">andatti GOURMET</h1>
+      <p style="color: #fff; font-size: 1.2em; letter-spacing: 2px;">ESTADIO VIRTUAL OXXO</p>
+      <div style="margin-top: 30px; padding: 15px 40px; border: 3px solid #FFD700; font-weight: bold; background: #FFD700; color: #000; border-radius: 50px;">ENTRAR Y PREPARAR CAFÉ</div>
     </div>
 
     <a-scene>
       <a-assets>
         <img id="fondo_oxxo" src="escenario_principal.jpg">
-        <audio id="sound_gol" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav" preload="auto"></audio>
-        <audio id="sound_clic" src="https://actions.google.com/sounds/v1/water/air_release.ogg" preload="auto"></audio>
+        <audio id="sound_cafeteria" src="https://assets.mixkit.co/sfx/preview/mixkit-coffee-shop-ambience-426.mp3" preload="auto"></audio>
+        <audio id="sound_gol" src="https://assets.mixkit.co/sfx/preview/mixkit-stadium-crowd-light-applause-492.mp3" preload="auto"></audio>
       </a-assets>
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
@@ -50,34 +50,27 @@
 
     <script>
       const welcome = document.querySelector('#welcome-screen');
+      const audioCafe = document.querySelector('#sound_cafeteria');
       const audioGol = document.querySelector('#sound_gol');
-      const audioClic = document.querySelector('#sound_clic');
       const vaso = document.querySelector('#vaso_contenedor');
-
-      // Función para "desbloquear" los audios
-      function unlockAudio() {
-        audioGol.play().then(() => {
-          audioGol.pause();
-          audioGol.currentTime = 0;
-        });
-        audioClic.play().then(() => {
-          audioClic.pause();
-          audioClic.currentTime = 0;
-        });
-      }
 
       welcome.addEventListener('click', function() {
         welcome.style.display = 'none';
-        unlockAudio();
+        
+        // Iniciamos el ambiente de cafetería
+        audioCafe.loop = true;
+        audioCafe.volume = 0.4;
+        audioCafe.play();
+
+        // Desbloqueamos el de gol (sin sonar aún)
+        audioGol.play().then(() => { audioGol.pause(); audioGol.currentTime = 0; });
       });
 
-      // Disparar sonido al completar el FUSE (mirar el vaso)
+      // Al mirar el vaso por 1 segundo... ¡Festejo!
       vaso.addEventListener('click', function () {
-        // Probamos con el sonido de aire/cafetera primero que es más ligero
-        audioClic.play();
-        // Y luego el ambiente
+        audioGol.volume = 0.8;
         audioGol.play();
-        console.log("Evento click detectado - Sonido disparado");
+        console.log("¡Interacción lograda!");
       });
     </script>
   </body>
