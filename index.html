@@ -9,18 +9,19 @@
         position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
         padding: 25px 60px; background: #FFD700; color: #000;
         font-family: sans-serif; font-weight: bold; font-size: 24px;
-        border: none; border-radius: 10px; cursor: pointer; z-index: 100000;
+        border: none; border-radius: 50px; cursor: pointer; z-index: 100000;
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
       }
       #overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: #000; z-index: 99999;
+        background: radial-gradient(circle, #333 0%, #000 100%); z-index: 99999;
       }
     </style>
   </head>
   <body>
 
     <div id="overlay"></div>
-    <button id="btn-entrar">ACTIVAR EXPERIENCIA</button>
+    <button id="btn-entrar">ENTRAR A ANDATTI GOURMET2</button>
 
     <a-scene>
       <a-assets>
@@ -29,14 +30,10 @@
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
 
-      <a-entity id="escena-sonido" 
-                sound="src: url(https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav); loop: true; volume: 0.6">
-      </a-entity>
-
       <a-entity id="vaso_contenedor" class="interactuable" position="0 1.1 -1.5"
                 geometry="primitive: cylinder; radius: 0.2; height: 0.5"
                 material="opacity: 0; transparent: true"
-                sound="src: url(https://actions.google.com/sounds/v1/sports/crowd_cheer.ogg); on: click; volume: 1">
+                animation="property: position; to: 0 1.15 -1.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine">
         
         <a-cone radius-bottom="0.07" radius-top="0.1" height="0.25" material="color: #FFF; opacity: 0.8; metalness: 0.5"></a-cone>
         <a-cylinder radius="0.075" height="0.04" position="0 -0.13 0" material="color: #FFD700; metalness: 1"></a-cylinder>
@@ -49,25 +46,43 @@
                     raycaster="objects: .interactuable"
                     position="0 0 -1"
                     geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
-                    material="color: #FFD700; shader: flat">
+                    material="color: #FFD700; shader: flat"
+                    animation__fusing="property: scale; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1000; startEvents: fusing"
+                    animation__reset="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
           </a-entity>
       </a-entity>
     </a-scene>
 
     <script>
+      // Definimos los audios usando el motor nativo del navegador
+      const audioCafe = new Audio('https://www.soundjay.com/ambient_c2026/sounds/check-point-1.mp3');
+      const audioGol = new Audio('https://www.soundjay.com/human/applause-01.mp3');
+      
       const btn = document.querySelector('#btn-entrar');
       const overlay = document.querySelector('#overlay');
-      const escena = document.querySelector('#escena-sonido');
+      const vaso = document.querySelector('#vaso_contenedor');
 
       btn.addEventListener('click', function() {
-        // 1. Quitar la pantalla
         btn.style.display = 'none';
         overlay.style.display = 'none';
 
-        // 2. Forzar al motor de A-Frame a sonar
-        if (escena.components.sound) {
-            escena.components.sound.playSound();
-        }
+        // Iniciamos el ambiente de cafetería real
+        audioCafe.loop = true;
+        audioCafe.volume = 0.4;
+        audioCafe.play().then(() => {
+            console.log("Cafetería sonando");
+        }).catch(err => {
+            console.log("Error de audio: Usando respaldo de ruido blanco");
+            // Si el real falla, disparamos el de respaldo
+            new Audio('https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav').play();
+        });
+      });
+
+      // Evento para el Grito de Gol / Aplausos
+      vaso.addEventListener('click', function() {
+        audioGol.currentTime = 0;
+        audioGol.volume = 0.8;
+        audioGol.play();
       });
     </script>
   </body>
