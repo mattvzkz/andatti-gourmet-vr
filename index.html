@@ -7,10 +7,11 @@
     <script src="https://unpkg.com/aframe-particle-system-component@1.0.x/dist/aframe-particle-system-component.min.js"></script>
   </head>
   <body>
-    <div id="welcome-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #FFD700; font-family: Arial, sans-serif; cursor: pointer;">
-      <h1 style="font-size: 3em; margin: 0;">andatti GOURMET</h1>
-      <p style="color: #fff; font-size: 1.2em; letter-spacing: 2px;">ESTADIO VIRTUAL OXXO3</p>
+    <div id="welcome-screen" onclick="entrarAlOxxo()" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #FFD700; font-family: Arial, sans-serif; cursor: pointer;">
+      <h1 style="font-size: 3em; margin: 0; text-align: center;">andatti GOURMET</h1>
+      <p style="color: #fff; font-size: 1.2em; letter-spacing: 2px;">EXPERIENCIA MUNDIALISTA 2026</p>
       <div style="margin-top: 30px; padding: 15px 40px; border: 3px solid #FFD700; font-weight: bold; background: #FFD700; color: #000; border-radius: 50px;">ENTRAR Y PREPARAR CAFÉ</div>
+      <p style="color: #666; margin-top: 20px; font-size: 0.8em;">(Si no avanza, haz clic varias veces)</p>
     </div>
 
     <a-scene>
@@ -34,19 +35,7 @@
         <a-text value="andatti\nGOURMET" align="center" position="0 0 0.11" color="#FFD700" width="0.8"></a-text>
 
         <a-entity position="0 0.15 0"
-                  particle-system="
-                    preset: dust; 
-                    color: #FFFFFF; 
-                    particleCount: 20; 
-                    size: 0.3; 
-                    velocityValue: 0 0.05 0; 
-                    velocitySpread: 0.02 0.01 0.02;
-                    accelerationValue: 0 -0.01 0;
-                    randomise: true;
-                    maxAge: 3;
-                    blending: normal;
-                    opacity: 0.15;
-                  ">
+                  particle-system="preset: dust; color: #FFFFFF; particleCount: 30; size: 0.2; velocityValue: 0 0.1 0; opacity: 0.2">
         </a-entity>
       </a-entity>
 
@@ -60,4 +49,41 @@
                     geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
                     material="color: #FFD700; shader: flat"
                     animation__fusing="property: scale; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1000; startEvents: fusing"
-                    animation__reset="property: scale; to:
+                    animation__reset="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
+          </a-entity>
+      </a-entity>
+    </a-scene>
+
+    <script>
+      // FUNCIÓN MAESTRA DE ENTRADA
+      function entrarAlOxxo() {
+        const screen = document.getElementById('welcome-screen');
+        const audioCafe = document.querySelector('#sound_cafeteria');
+        const audioGol = document.querySelector('#sound_gol');
+
+        // Quitamos la pantalla inmediatamente
+        screen.style.display = 'none';
+
+        // Activamos audios
+        if(audioCafe) {
+          audioCafe.loop = true;
+          audioCafe.volume = 0.3;
+          audioCafe.play().catch(e => console.log("Audio cafe en espera"));
+        }
+        
+        if(audioGol) {
+          audioGol.play().then(() => { audioGol.pause(); audioGol.currentTime = 0; }).catch(e => {});
+        }
+      }
+
+      // Listener para el clic en el vaso (Grito de Gol)
+      document.querySelector('#vaso_contenedor').addEventListener('click', function () {
+        const audioGol = document.querySelector('#sound_gol');
+        if(audioGol) {
+          audioGol.volume = 0.9;
+          audioGol.play();
+        }
+      });
+    </script>
+  </body>
+</html>
