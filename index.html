@@ -21,13 +21,13 @@
   <body>
 
     <div id="overlay"></div>
-    <button id="btn-entrar">ENTRAR Y ACTIVAR AUDIO2</button>
+    <button id="btn-entrar">ENTRAR A ANDATTI GOURMET</button>
 
     <a-scene>
       <a-assets>
         <img id="fondo_oxxo" src="escenario_principal.jpg">
-        <audio id="sound_cafeteria" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav" preload="auto"></audio>
-        <audio id="sound_gol" src="https://cdn.aframe.io/speech-command/example/audio/fawn.mp3" preload="auto"></audio>
+        <audio id="sound_cafeteria" src="https://cdn.pixabay.com/audio/2022/03/15/audio_29117604f0.mp3" preload="auto"></audio>
+        <audio id="sound_gol" src="https://cdn.pixabay.com/audio/2021/08/04/audio_108169123c.mp3" preload="auto"></audio>
       </a-assets>
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
@@ -67,15 +67,10 @@
         btn.style.display = 'none';
         overlay.style.display = 'none';
 
-        // RE-INICIO FORZADO DEL CONTEXTO DE AUDIO
         if (audioCafe) {
-          audioCafe.volume = 1.0; // Subimos volumen al máximo para la prueba
           audioCafe.loop = true;
-          audioCafe.play().then(() => {
-            console.log("¡Éxito! Audio de fondo sonando.");
-          }).catch(err => {
-            console.error("El navegador bloqueó el audio:", err);
-          });
+          audioCafe.volume = 0.5;
+          audioCafe.play().catch(err => console.error("Error audio fondo:", err));
         }
       });
 
@@ -83,7 +78,7 @@
         if (audioGol) {
           audioGol.currentTime = 0;
           audioGol.volume = 1.0;
-          audioGol.play();
+          audioGol.play().catch(err => console.error("Error audio gol:", err));
         }
       });
     </script>
