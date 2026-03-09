@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>andatti Gourmet VR | Final</title>
+    <title>andatti Gourmet VR | Final Audio Fix</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
       #btn-entrar {
@@ -14,14 +14,14 @@
       }
       #overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: radial-gradient(circle, #333 0%, #000 100%); z-index: 99999;
+        background: #000; z-index: 99999;
       }
     </style>
   </head>
   <body>
 
     <div id="overlay"></div>
-    <button id="btn-entrar">ENTRAR A ANDATTI GOURMET3</button>
+    <button id="btn-entrar">ENTRAR A ANDATTI GOURMET</button>
 
     <a-scene>
       <a-assets>
@@ -54,7 +54,7 @@
     </a-scene>
 
     <script>
-      // Definimos los audios usando el motor nativo del navegador
+      // NUEVO ENLACE DE AUDIO DE FONDO
       const audioCafe = new Audio('https://www.soundjay.com/ambient_c2026/sounds/restaurant-1.mp3');
       const audioGol = new Audio('https://www.soundjay.com/human/applause-01.mp3');
       
@@ -66,19 +66,17 @@
         btn.style.display = 'none';
         overlay.style.display = 'none';
 
-        // Iniciamos el ambiente de cafetería real
+        // Reproducción forzada
         audioCafe.loop = true;
-        audioCafe.volume = 0.4;
-        audioCafe.play().then(() => {
-            console.log("Cafetería sonando");
-        }).catch(err => {
-            console.log("Error de audio: Usando respaldo de ruido blanco");
-            // Si el real falla, disparamos el de respaldo
+        audioCafe.volume = 0.5;
+        audioCafe.play().catch(err => {
+            console.log("Error con el nuevo link, aplicando respaldo...");
+            // Respaldo en caso de que el link de soundjay falle por servidor
             new Audio('https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav').play();
         });
       });
 
-      // Evento para el Grito de Gol / Aplausos
+      // Interacción con el vaso
       vaso.addEventListener('click', function() {
         audioGol.currentTime = 0;
         audioGol.volume = 0.8;
