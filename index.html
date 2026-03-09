@@ -5,52 +5,34 @@
     <title>andatti Gourmet VR | Edición Copa del Mundo 2026</title>
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <style>
-      /* Estilo para asegurar que el botón siempre sea clickable */
       #btn-entrar {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding: 20px 50px;
-        background: #FFD700;
-        color: #000;
-        font-family: Arial, sans-serif;
-        font-weight: bold;
-        font-size: 20px;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        z-index: 99999;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+        padding: 20px 50px; background: #FFD700; color: #000;
+        font-family: Arial, sans-serif; font-weight: bold; font-size: 20px;
+        border: none; border-radius: 50px; cursor: pointer; z-index: 99999;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
       }
       #overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #000;
-        z-index: 99998;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: #000; z-index: 99998;
       }
     </style>
   </head>
   <body>
 
     <div id="overlay"></div>
-    <button id="btn-entrar">ENTRAR A ANDATTI GOURMET</button>
+    <button id="btn-entrar">ENTRAR Y ACTIVAR AUDIO</button>
 
     <a-scene>
       <a-assets>
         <img id="fondo_oxxo" src="escenario_principal.jpg">
-        <audio id="sound_cafeteria" src="https://assets.mixkit.co/sfx/preview/mixkit-coffee-shop-ambience-426.mp3" preload="auto"></audio>
-        <audio id="sound_gol" src="https://assets.mixkit.co/sfx/preview/mixkit-stadium-crowd-light-applause-492.mp3" preload="auto"></audio>
+        <audio id="sound_cafeteria" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav" preload="auto"></audio>
+        <audio id="sound_gol" src="https://cdn.aframe.io/speech-command/example/audio/fawn.mp3" preload="auto"></audio>
       </a-assets>
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
 
-      <a-entity id="vaso_contenedor" 
-                class="interactuable"
-                position="0 1.1 -1.5"
+      <a-entity id="vaso_contenedor" class="interactuable" position="0 1.1 -1.5"
                 geometry="primitive: cylinder; radius: 0.2; height: 0.5"
                 material="opacity: 0; transparent: true"
                 animation="property: position; to: 0 1.15 -1.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine">
@@ -82,27 +64,27 @@
       const audioGol = document.getElementById('sound_gol');
 
       btn.addEventListener('click', function() {
-        // 1. Eliminar la interfaz de entrada
         btn.style.display = 'none';
         overlay.style.display = 'none';
 
-        // 2. Forzar inicio de audio ambiente
-        audioCafe.loop = true;
-        audioCafe.volume = 0.4;
-        audioCafe.play().catch(e => console.log("Reintento de audio..."));
-
-        // 3. Preparar audio de gol
-        audioGol.play().then(() => {
-          audioGol.pause();
-          audioGol.currentTime = 0;
-        }).catch(e => {});
+        // RE-INICIO FORZADO DEL CONTEXTO DE AUDIO
+        if (audioCafe) {
+          audioCafe.volume = 1.0; // Subimos volumen al máximo para la prueba
+          audioCafe.loop = true;
+          audioCafe.play().then(() => {
+            console.log("¡Éxito! Audio de fondo sonando.");
+          }).catch(err => {
+            console.error("El navegador bloqueó el audio:", err);
+          });
+        }
       });
 
-      // Interacción con el vaso
       document.querySelector('#vaso_contenedor').addEventListener('click', function () {
-        audioGol.currentTime = 0;
-        audioGol.volume = 0.8;
-        audioGol.play();
+        if (audioGol) {
+          audioGol.currentTime = 0;
+          audioGol.volume = 1.0;
+          audioGol.play();
+        }
       });
     </script>
   </body>
