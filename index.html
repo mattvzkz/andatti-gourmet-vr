@@ -21,13 +21,13 @@
   <body>
 
     <div id="overlay"></div>
-    <button id="btn-entrar">ENTRAR A ANDATTI GOURMET</button>
+    <button id="btn-entrar">ENTRAR Y ACTIVAR SONIDO GOURMET</button>
 
     <a-scene>
       <a-assets>
         <img id="fondo_oxxo" src="escenario_principal.jpg">
-        <audio id="sound_cafeteria" src="https://cdn.pixabay.com/audio/2022/03/15/audio_29117604f0.mp3" preload="auto"></audio>
-        <audio id="sound_gol" src="https://cdn.pixabay.com/audio/2021/08/04/audio_108169123c.mp3" preload="auto"></audio>
+        <audio id="sound_cafeteria" src="https://www.soundjay.com/ambient/restaurant-ambience-1.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="sound_gol" src="https://www.soundjay.com/human/applause-01.mp3" preload="auto" crossorigin="anonymous"></audio>
       </a-assets>
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
@@ -64,22 +64,30 @@
       const audioGol = document.getElementById('sound_gol');
 
       btn.addEventListener('click', function() {
+        // Ocultar capas
         btn.style.display = 'none';
         overlay.style.display = 'none';
 
-        if (audioCafe) {
-          audioCafe.loop = true;
-          audioCafe.volume = 0.5;
-          audioCafe.play().catch(err => console.error("Error audio fondo:", err));
+        // CREAR CONTEXTO DE AUDIO (Esto fuerza la aparición de la bocina en la pestaña)
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
         }
+
+        // Reproducir ambiente
+        audioCafe.loop = true;
+        audioCafe.volume = 0.5;
+        audioCafe.play().catch(e => {
+            console.log("Reintentando play con interacción extra...");
+            // Si falla, lo intentamos de nuevo tras un mini delay
+            setTimeout(() => audioCafe.play(), 100);
+        });
       });
 
       document.querySelector('#vaso_contenedor').addEventListener('click', function () {
-        if (audioGol) {
-          audioGol.currentTime = 0;
-          audioGol.volume = 1.0;
-          audioGol.play().catch(err => console.error("Error audio gol:", err));
-        }
+        audioGol.currentTime = 0;
+        audioGol.volume = 0.8;
+        audioGol.play();
       });
     </script>
   </body>
