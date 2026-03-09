@@ -6,9 +6,9 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
   </head>
   <body>
-    <div style="position: fixed; top: 10px; left: 10px; z-index: 999; color: white; font-family: sans-serif; background: rgba(0,0,0,0.7); padding: 12px; border-radius: 8px; border: 2px solid #FFD700;">
-      1. Haz CLIC aquí para activar audio 🔊<br>
-      2. Mira el vaso 1 segundo para el GOL ⚽
+    <div style="position: fixed; top: 10px; left: 10px; z-index: 999; color: white; font-family: sans-serif; background: rgba(0,0,0,0.8); padding: 12px; border-radius: 8px; border: 2px solid #FFD700;">
+      1. Haz CLIC en cualquier parte 🔊<br>
+      2. MIRA el centro del vaso ⚽
     </div>
 
     <a-scene>
@@ -20,38 +20,35 @@
 
       <a-sky src="#fondo_oxxo" rotation="0 -90 0"></a-sky>
 
-      <a-entity sound="src: #sound_cafe; autoplay: true; loop: true; volume: 0.2" position="-1 1.2 -1"></a-entity>
-
-      <a-entity id="vaso_interactivo" 
-                class="interactuable" 
+      <a-entity id="vaso_contenedor" 
+                class="interactuable"
                 position="0 1.1 -1.5"
-                animation="property: position; to: 0 1.2 -1.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine"
+                geometry="primitive: cylinder; radius: 0.15; height: 0.4"
+                material="opacity: 0; transparent: true"
+                animation="property: position; to: 0 1.15 -1.5; dir: alternate; dur: 2000; loop: true; easing: easeInOutSine"
                 sound="src: #sound_gol; on: click; volume: 1">
         
         <a-cone radius-bottom="0.07" radius-top="0.1" height="0.25" 
-                material="color: #FFF; opacity: 0.7; transparent: true; roughness: 0; metalness: 0.5">
+                material="color: #FFF; opacity: 0.7; transparent: true; metalness: 0.5">
         </a-cone>
-        
         <a-cylinder radius="0.075" height="0.04" position="0 -0.13 0" 
-                    material="color: #FFD700; metalness: 1; roughness: 0.1"
-                    animation="property: material.color; from: #FFD700; to: #FFF; dir: alternate; dur: 1000; loop: true">
+                    material="color: #FFD700; metalness: 1">
         </a-cylinder>
-
-        <a-text value="andatti\nGOURMET" align="center" position="0 0 0.11" 
-                color="#FFD700" width="0.8" font="msdf"></a-text>
+        <a-text value="andatti\nGOURMET" align="center" position="0 0 0.11" color="#FFD700" width="0.8"></a-text>
       </a-entity>
 
       <a-light type="ambient" intensity="0.7"></a-light>
       <a-light type="point" intensity="1" position="0 2 -1" color="#FFD700"></a-light>
 
-      <a-entity id="rig" position="0 0 0"> <a-entity camera look-controls position="0 1.6 0">
+      <a-entity id="rig" position="0 0 0">
+        <a-entity camera look-controls position="0 1.6 0">
             <a-entity cursor="fuse: true; fuseTimeout: 1000"
-                      position="0 0 -0.5"
-                      geometry="primitive: ring; radiusInner: 0.008; radiusOuter: 0.015"
-                      material="color: #FFD700; shader: flat"
                       raycaster="objects: .interactuable"
-                      animation__fusing="property: geometry.radiusInner; from: 0.008; to: 0.001; dur: 1000; startEvents: fusing"
-                      animation__mouseleave="property: geometry.radiusInner; to: 0.008; dur: 200; startEvents: mouseleave">
+                      position="0 0 -1"
+                      geometry="primitive: ring; radiusInner: 0.015; radiusOuter: 0.025"
+                      material="color: #FFD700; shader: flat"
+                      animation__fusing="property: scale; from: 1 1 1; to: 0.1 0.1 0.1; dur: 1000; startEvents: fusing"
+                      animation__reset="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave">
             </a-entity>
         </a-entity>
       </a-entity>
